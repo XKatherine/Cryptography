@@ -1,27 +1,27 @@
 import sys
 
-def KSA(key):
+def init(key):
     keylength = len(key)
 
-    S = list(range(256))
+    S = list(range(32))
 
     j = 0
-    for i in range(256):
-        j = (j + S[i] + key[i % keylength]) % 256
+    for i in range(32):
+        j = (j + S[i] + key[i % keylength]) % 32
         S[i], S[j] = S[j], S[i]
 
     return S
 
 
-def PRGA(S):
+def generation(S):
     i = 0
     j = 0
     while True:
-        i = (i + 1) % 256
-        j = (j + S[i]) % 256
+        i = (i + 1) % 32
+        j = (j + S[i]) % 32
         S[i], S[j] = S[j], S[i]
 
-        K = S[(S[i] + S[j]) % 256]
+        K = S[(S[i] + S[j]) % 32]
         yield K
 
 def convert_key(s):
@@ -29,8 +29,8 @@ def convert_key(s):
 
 
 def RC4(key):
-    S = KSA(key)
-    return PRGA(S)
+    S = init(key)
+    return generation(S)
 
 
 if __name__ == '__main__':
