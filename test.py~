@@ -1,0 +1,9 @@
+def test():
+    i=0;
+    while True:
+        yield i
+        i = i + 1
+
+if __name__ == '__main__':
+    for i in range(5):
+        print(test().__next__())
